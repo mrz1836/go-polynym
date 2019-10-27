@@ -1,10 +1,10 @@
 # go-polynym
 **go-polynym** is the unofficial golang implementation for the [Polynym API](https://polynym.io/)
 
-[![Build Status](https://travis-ci.com/mrz1836/go-polynym.svg?branch=master&v=1)](https://travis-ci.com/mrz1836/go-polynym)
-[![Report](https://goreportcard.com/badge/github.com/mrz1836/go-polynym?style=flat&v=1)](https://goreportcard.com/report/github.com/mrz1836/go-polynym)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/dde6d46426bd4c12be65916da8cf04d2)](https://www.codacy.com/app/mrz1818/go-polynym?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mrz1836/go-polynym&amp;utm_campaign=Badge_Grade)
-[![Release](https://img.shields.io/github/release-pre/mrz1836/go-polynym.svg?style=flat&v=2)](https://github.com/mrz1836/go-polynym/releases)
+[![Build Status](https://travis-ci.com/mrz1836/go-polynym.svg?branch=master&v=2)](https://travis-ci.com/mrz1836/go-polynym)
+[![Report](https://goreportcard.com/badge/github.com/mrz1836/go-polynym?style=flat&v=2)](https://goreportcard.com/report/github.com/mrz1836/go-polynym)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/85aed3f384894abc958e9fa1e7f2f7ac)](https://www.codacy.com/app/mrz1818/go-polynym?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mrz1836/go-polynym&amp;utm_campaign=Badge_Grade)
+[![Release](https://img.shields.io/github/release-pre/mrz1836/go-polynym.svg?style=flat&v=1)](https://github.com/mrz1836/go-polynym/releases)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat)](https://github.com/RichardLitt/standard-readme)
 [![GoDoc](https://godoc.org/github.com/mrz1836/go-polynym?status.svg&style=flat)](https://godoc.org/github.com/mrz1836/go-polynym)
 
@@ -83,7 +83,7 @@ func main() {
 
 	// Start a new client and resolve
 	client, _ := polynym.NewClient()
-	resp, _ := client.ResolveAddress("mrz@moneybutton.com")
+	resp, _ := client.GetAddress("mrz@moneybutton.com")
 
 	log.Println("address:", resp.Address)
 }
@@ -109,4 +109,4 @@ Looking for a Javascript version? Check out the [Polynym npm package](https://ww
 
 ## License
 
-![License](https://img.shields.io/github/license/mrz1836/go-polynym.svg?style=flat&v=1)
+![License](https://img.shields.io/github/license/mrz1836/go-polynym.svg?style=flat&v=2)
