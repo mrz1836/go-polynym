@@ -1,6 +1,5 @@
 package polynym
 
-
 import (
 	"net"
 	"net/http"
