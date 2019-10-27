@@ -32,8 +32,8 @@ func BenchmarkNewClient(b *testing.B) {
 	}
 }
 
-// TestClient_ResolveAddress tests the ResolveAddress()
-func TestClient_ResolveAddress(t *testing.T) {
+// TestClient_GetAddress tests the GetAddress()
+func TestClient_GetAddress(t *testing.T) {
 	// Skip this test in short mode (not needed)
 	if testing.Short() {
 		t.Skip("skipping testing in short mode")
@@ -46,8 +46,8 @@ func TestClient_ResolveAddress(t *testing.T) {
 	}
 
 	address := "16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA"
-	var resp *AddressResponse
-	resp, err = client.ResolveAddress(address)
+	var resp *GetAddressResponse
+	resp, err = client.GetAddress(address)
 	if err != nil {
 		t.Fatal("error occurred: " + err.Error())
 	}
@@ -58,8 +58,8 @@ func TestClient_ResolveAddress(t *testing.T) {
 
 }
 
-// TestClient_ResolveAddressRelayX tests the ResolveAddress()
-func TestClient_ResolveAddressRelayX(t *testing.T) {
+// TestClient_GetAddressRelayX tests the GetAddress()
+func TestClient_GetAddressRelayX(t *testing.T) {
 	// Skip this test in short mode (not needed)
 	if testing.Short() {
 		t.Skip("skipping testing in short mode")
@@ -72,8 +72,8 @@ func TestClient_ResolveAddressRelayX(t *testing.T) {
 	}
 
 	address := "1mrz"
-	var resp *AddressResponse
-	resp, err = client.ResolveAddress(address)
+	var resp *GetAddressResponse
+	resp, err = client.GetAddress(address)
 	if err != nil {
 		t.Fatal("error occurred: " + err.Error())
 	}
@@ -84,8 +84,8 @@ func TestClient_ResolveAddressRelayX(t *testing.T) {
 
 }
 
-// TestClient_ResolveAddressPaymail tests the ResolveAddress()
-func TestClient_ResolveAddressPaymail(t *testing.T) {
+// TestClient_GetAddressPaymail tests the GetAddress()
+func TestClient_GetAddressPaymail(t *testing.T) {
 	// Skip this test in short mode (not needed)
 	if testing.Short() {
 		t.Skip("skipping testing in short mode")
@@ -98,8 +98,8 @@ func TestClient_ResolveAddressPaymail(t *testing.T) {
 	}
 
 	address := "mrz@moneybutton.com"
-	var resp *AddressResponse
-	resp, err = client.ResolveAddress(address)
+	var resp *GetAddressResponse
+	resp, err = client.GetAddress(address)
 	if err != nil {
 		t.Fatal("error occurred: " + err.Error())
 	}
@@ -108,4 +108,12 @@ func TestClient_ResolveAddressPaymail(t *testing.T) {
 		t.Fatal("address should have resolved:", address)
 	}
 
+}
+
+// ExampleClient_GetAddress example using GetAddress()
+func ExampleClient_GetAddress() {
+	client, _ := NewClient()
+	resp, _ := client.GetAddress("16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA") //mrz@moneybutton.com
+	fmt.Println(resp.Address)
+	// Output:16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA
 }

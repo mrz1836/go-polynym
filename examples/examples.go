@@ -18,8 +18,8 @@ func main() {
 	}
 
 	// Resolve a handle
-	var resp *polynym.AddressResponse
-	resp, err = client.ResolveAddress("mrz@moneybutton.com")
+	var resp *polynym.GetAddressResponse
+	resp, err = client.GetAddress("mrz@moneybutton.com")
 	if err != nil {
 		log.Fatal(err.Error())
 	}

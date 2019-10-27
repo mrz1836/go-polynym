@@ -7,7 +7,7 @@ Example:
 client, _ := polynym.NewClient()
 
 // Get address
-resp, _ := client.ResolveAddress("1mrz")
+resp, _ := client.GetAddress("1mrz")
 
 // What's the address?
 log.Println("address:", resp.Address)
@@ -87,17 +87,17 @@ func NewClient() (c *Client, err error) {
 	return
 }
 
-// AddressResponse is what polynym returns (success or fail)
-type AddressResponse struct {
+// GetAddressResponse is what polynym returns (success or fail)
+type GetAddressResponse struct {
 	Address      string `json:"address"`
 	ErrorMessage string `json:"error"`
 }
 
-// ResolveAddress returns the address of a given 1handle, paymail or BSV address ($handcash deprecated)
-func (c *Client) ResolveAddress(address string) (response *AddressResponse, err error) {
+// GetAddress returns the address of a given 1handle, paymail or BSV address ($handcash deprecated)
+func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressResponse, err error) {
 
 	// Set the API url
-	reqURL := fmt.Sprintf("%s/%s/%s", APIEndpoint, "getAddress", address)
+	reqURL := fmt.Sprintf("%s/%s/%s", APIEndpoint, "getAddress", handleOrAddress)
 
 	// Store for debugging purposes
 	c.LastRequest.Method = http.MethodGet
