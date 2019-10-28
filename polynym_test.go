@@ -110,6 +110,32 @@ func TestClient_GetAddressPaymail(t *testing.T) {
 
 }
 
+// TestClient_GetAddressHandCash tests the GetAddressHandCash()
+func TestClient_GetAddressHandCash(t *testing.T) {
+	// Skip this test in short mode (not needed)
+	if testing.Short() {
+		t.Skip("skipping testing in short mode")
+	}
+
+	// Create a new client object to handle your queries
+	client, err := NewClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	address := "$handcash"
+	var resp *GetAddressResponse
+	resp, err = client.GetAddress(address)
+	if err != nil {
+		t.Fatal("error occurred: " + err.Error())
+	}
+
+	if len(resp.Address) == 0 {
+		t.Fatal("address should have resolved:", address)
+	}
+
+}
+
 // ExampleClient_GetAddress example using GetAddress()
 func ExampleClient_GetAddress() {
 	client, _ := NewClient()

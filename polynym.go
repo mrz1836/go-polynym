@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gojek/heimdall"
 	"github.com/gojek/heimdall/httpclient"
@@ -93,11 +94,11 @@ type GetAddressResponse struct {
 	ErrorMessage string `json:"error"`
 }
 
-// GetAddress returns the address of a given 1handle, paymail or BSV address ($handcash deprecated)
+// GetAddress returns the address of a given 1handle, $handcash, paymail or BSV address
 func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressResponse, err error) {
 
 	// Set the API url
-	reqURL := fmt.Sprintf("%s/%s/%s", APIEndpoint, "getAddress", handleOrAddress)
+	reqURL := fmt.Sprintf("%s/%s/%s", APIEndpoint, "getAddress", detectHandCash(handleOrAddress))
 
 	// Store for debugging purposes
 	c.LastRequest.Method = http.MethodGet
@@ -153,4 +154,12 @@ func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressRespons
 	err = json.NewDecoder(resp.Body).Decode(&response)
 
 	return
+}
+
+// detectHandCash now converts $handles to handle@handcash.io
+func detectHandCash(handle string) string {
+	if strings.Contains(handle, "$") {
+		handle = strings.Replace(handle, "$", "", -1) + "@handcash.io"
+	}
+	return handle
 }

@@ -36,7 +36,7 @@ $ dep ensure -update -v
 You can view the generated [documentation here](https://godoc.org/github.com/mrz1836/go-polynym).
 
 ### Features
-- Resolves [RelayX Handles](https://relayx.io), [Paymails](https://bsvalias.org/), and BitcoinSV addresses
+- Resolves [RelayX Handles](https://relayx.io),  [$handcash handles](https://handcash.io), [Paymails](https://bsvalias.org/), and BitcoinSV addresses
 - Client is completely configurable
 - Customize User Agent per request
 - Using [heimdall http client](https://github.com/gojek/heimdall) with exponential backoff & more
