@@ -21,15 +21,9 @@
 
 ## Installation
 
-**go-polynym** requires a [supported release of Go](https://golang.org/doc/devel/release.html#policy) and [dep](https://github.com/golang/dep).
+**go-polynym** requires a [supported release of Go](https://golang.org/doc/devel/release.html#policy).
 ```bash
 $ go get -u github.com/mrz1836/go-polynym
-```
-
-Updating dependencies in **go-polynym**:
-```bash
-$ cd ../go-polynym
-$ dep ensure -update -v
 ```
 
 ## Documentation
