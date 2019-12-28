@@ -31,8 +31,7 @@ You can view the generated [documentation here](https://godoc.org/github.com/mrz
 
 ### Features
 - Resolves [RelayX Handles](https://relayx.io),  [$handcash handles](https://handcash.io), [Paymails](https://bsvalias.org/), and BitcoinSV addresses
-- Client is completely configurable
-- Customize User Agent per request
+- [Client](client.go) is completely configurable
 - Using [heimdall http client](https://github.com/gojek/heimdall) with exponential backoff & more
 
 ## Examples & Tests
@@ -93,7 +92,7 @@ View the [contributing guidelines](CONTRIBUTING.md) and follow the [code of cond
 
 Support the development of this project 🙏
 
-[![Donate](https://img.shields.io/badge/donate-bitcoin-brightgreen.svg)](https://tonicpow.com/?af=go-polynym)
+[![Donate](https://img.shields.io/badge/donate-bitcoin-brightgreen.svg)](https://mrz1818.com/?tab=tips&af=go-polynym)
 
 #### Credits
 
