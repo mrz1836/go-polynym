@@ -16,6 +16,9 @@ const (
 
 	// defaultUserAgent is the default user agent for all requests
 	defaultUserAgent string = "go-polynym: " + version
+
+	// apiEndpoint is where we fire requests
+	apiEndpoint string = "https://api.polynym.io"
 )
 
 // Client is the parent struct that wraps the heimdall client

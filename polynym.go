@@ -40,7 +40,7 @@ func NewClient(clientOptions *Options) (c *Client, err error) {
 func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressResponse, err error) {
 
 	// Set the API url
-	reqURL := fmt.Sprintf("%s/%s/%s", APIEndpoint, "getAddress", detectHandCash(handleOrAddress))
+	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", detectHandCash(handleOrAddress))
 
 	// Store for debugging purposes
 	c.LastRequest.Method = http.MethodGet
