@@ -12,7 +12,7 @@ import (
 func main() {
 
 	// Start a new client
-	client, err := polynym.NewClient()
+	client, err := polynym.NewClient(nil)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

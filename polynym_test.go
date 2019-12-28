@@ -2,33 +2,92 @@ package polynym
 
 import (
 	"fmt"
+	"time"
 
 	"testing"
 )
 
 // TestNewClient test new client
 func TestNewClient(t *testing.T) {
-	client, err := NewClient()
+	client, err := NewClient(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if len(client.UserAgent) == 0 {
+	if len(client.Parameters.UserAgent) == 0 {
 		t.Fatal("missing user agent")
 	}
 }
 
 // ExampleNewClient example using NewClient()
 func ExampleNewClient() {
-	client, _ := NewClient()
-	fmt.Println(client.UserAgent)
-	// Output:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Safari/537.36
+	client, _ := NewClient(nil)
+	fmt.Println(client.Parameters.UserAgent)
+	// Output:go-polynym: v1
 }
 
 // BenchmarkNewClient benchmarks the NewClient method
 func BenchmarkNewClient(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, _ = NewClient()
+		_, _ = NewClient(nil)
+	}
+}
+
+// TestDefaultOptions tests setting ClientDefaultOptions()
+func TestDefaultOptions(t *testing.T) {
+
+	options := ClientDefaultOptions()
+
+	if options.UserAgent != defaultUserAgent {
+		t.Fatalf("expected value: %s got: %s", defaultUserAgent, options.UserAgent)
+	}
+
+	if options.BackOffExponentFactor != 2.0 {
+		t.Fatalf("expected value: %f got: %f", 2.0, options.BackOffExponentFactor)
+	}
+
+	if options.BackOffInitialTimeout != 2*time.Millisecond {
+		t.Fatalf("expected value: %v got: %v", 2*time.Millisecond, options.BackOffInitialTimeout)
+	}
+
+	if options.BackOffMaximumJitterInterval != 2*time.Millisecond {
+		t.Fatalf("expected value: %v got: %v", 2*time.Millisecond, options.BackOffMaximumJitterInterval)
+	}
+
+	if options.BackOffMaxTimeout != 10*time.Millisecond {
+		t.Fatalf("expected value: %v got: %v", 10*time.Millisecond, options.BackOffMaxTimeout)
+	}
+
+	if options.DialerKeepAlive != 20*time.Second {
+		t.Fatalf("expected value: %v got: %v", 20*time.Second, options.DialerKeepAlive)
+	}
+
+	if options.DialerTimeout != 5*time.Second {
+		t.Fatalf("expected value: %v got: %v", 5*time.Second, options.DialerTimeout)
+	}
+
+	if options.RequestRetryCount != 2 {
+		t.Fatalf("expected value: %v got: %v", 2, options.RequestRetryCount)
+	}
+
+	if options.RequestTimeout != 10*time.Second {
+		t.Fatalf("expected value: %v got: %v", 10*time.Second, options.RequestTimeout)
+	}
+
+	if options.TransportExpectContinueTimeout != 3*time.Second {
+		t.Fatalf("expected value: %v got: %v", 3*time.Second, options.TransportExpectContinueTimeout)
+	}
+
+	if options.TransportIdleTimeout != 20*time.Second {
+		t.Fatalf("expected value: %v got: %v", 20*time.Second, options.TransportIdleTimeout)
+	}
+
+	if options.TransportMaxIdleConnections != 10 {
+		t.Fatalf("expected value: %v got: %v", 10, options.TransportMaxIdleConnections)
+	}
+
+	if options.TransportTLSHandshakeTimeout != 5*time.Second {
+		t.Fatalf("expected value: %v got: %v", 5*time.Second, options.TransportTLSHandshakeTimeout)
 	}
 }
 
@@ -40,7 +99,7 @@ func TestClient_GetAddress(t *testing.T) {
 	}
 
 	// Create a new client object to handle your queries
-	client, err := NewClient()
+	client, err := NewClient(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,7 +125,7 @@ func TestClient_GetAddressRelayX(t *testing.T) {
 	}
 
 	// Create a new client object to handle your queries
-	client, err := NewClient()
+	client, err := NewClient(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,7 +151,7 @@ func TestClient_GetAddressPaymail(t *testing.T) {
 	}
 
 	// Create a new client object to handle your queries
-	client, err := NewClient()
+	client, err := NewClient(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -118,7 +177,7 @@ func TestClient_GetAddressHandCash(t *testing.T) {
 	}
 
 	// Create a new client object to handle your queries
-	client, err := NewClient()
+	client, err := NewClient(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -138,7 +197,7 @@ func TestClient_GetAddressHandCash(t *testing.T) {
 
 // ExampleClient_GetAddress example using GetAddress()
 func ExampleClient_GetAddress() {
-	client, _ := NewClient()
+	client, _ := NewClient(nil)
 	resp, _ := client.GetAddress("16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA") //mrz@moneybutton.com
 	fmt.Println(resp.Address)
 	// Output:16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA

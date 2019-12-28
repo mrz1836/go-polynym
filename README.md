@@ -76,7 +76,7 @@ import (
 func main() {
 
 	// Start a new client and resolve
-	client, _ := polynym.NewClient()
+	client, _ := polynym.NewClient(nil)
 	resp, _ := client.GetAddress("mrz@moneybutton.com")
 
 	log.Println("address:", resp.Address)
@@ -93,7 +93,7 @@ View the [contributing guidelines](CONTRIBUTING.md) and follow the [code of cond
 
 Support the development of this project 🙏
 
-[![Donate](https://img.shields.io/badge/donate-bitcoin-brightgreen.svg)](https://mrz1818.com/?tab=tips&af=go-polynym)
+[![Donate](https://img.shields.io/badge/donate-bitcoin-brightgreen.svg)](https://tonicpow.com/?af=go-polynym)
 
 #### Credits
 

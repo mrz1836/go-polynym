@@ -4,7 +4,7 @@ Package polynym is the unofficial golang implementation for the Polynym API
 Example:
 
 // Create a new client
-client, _ := polynym.NewClient()
+client, _ := polynym.NewClient(nil)
 
 // Get address
 resp, _ := client.GetAddress("1mrz")
@@ -17,76 +17,9 @@ package polynym
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
-
-	"github.com/gojek/heimdall"
-	"github.com/gojek/heimdall/httpclient"
 )
-
-// Client holds client configuration settings
-type Client struct {
-
-	// HTTPClient carries out the POST operations
-	HTTPClient heimdall.Client
-
-	// LastRequest is the raw information from the last request
-	LastRequest *LastRequest
-
-	// UserAgent (optional for changing user agents)
-	UserAgent string
-}
-
-// LastRequest is used to track what was submitted to the Request()
-type LastRequest struct {
-
-	// Method is either POST or GET
-	Method string
-
-	// PostData is the post data submitted if POST request
-	PostData string
-
-	// StatusCode is the last code from the request
-	StatusCode int
-
-	// URL is the url used for the request
-	URL string
-}
-
-// NewClient creates a new client to submit requests
-func NewClient() (c *Client, err error) {
-
-	// Create a client
-	c = new(Client)
-
-	// Create exponential backoff
-	backOff := heimdall.NewExponentialBackoff(
-		ConnectionInitialTimeout,
-		ConnectionMaxTimeout,
-		ConnectionExponentFactor,
-		ConnectionMaximumJitterInterval,
-	)
-
-	// Create the http client
-	c.HTTPClient = httpclient.NewClient(
-		httpclient.WithHTTPTimeout(ConnectionWithHTTPTimeout),
-		httpclient.WithRetrier(heimdall.NewRetrier(backOff)),
-		httpclient.WithRetryCount(ConnectionRetryCount),
-		httpclient.WithHTTPClient(&http.Client{
-			Transport: ClientDefaultTransport,
-		}),
-	)
-
-	// Set defaults
-	c.UserAgent = DefaultUserAgent
-
-	// Create a last request struct
-	c.LastRequest = new(LastRequest)
-
-	// Return the client
-	return
-}
 
 // GetAddressResponse is what polynym returns (success or fail)
 type GetAddressResponse struct {
@@ -94,7 +27,16 @@ type GetAddressResponse struct {
 	ErrorMessage string `json:"error"`
 }
 
-// GetAddress returns the address of a given 1handle, $handcash, paymail or BSV address
+// NewClient creates a new client to submit requests
+func NewClient(clientOptions *Options) (c *Client, err error) {
+
+	// Create a client using the given options
+	c = createClient(clientOptions)
+
+	return
+}
+
+// GetAddress returns the address of a given 1handle, $handcash, paymail or BitcoinSV address
 func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressResponse, err error) {
 
 	// Set the API url
@@ -103,6 +45,7 @@ func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressRespons
 	// Store for debugging purposes
 	c.LastRequest.Method = http.MethodGet
 	c.LastRequest.URL = reqURL
+	c.LastRequest.PostData = reqURL
 
 	// Start the request
 	var req *http.Request
@@ -112,7 +55,7 @@ func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressRespons
 
 	// Set the header (user agent is in case they block default Go user agents)
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("User-Agent", c.UserAgent)
+	req.Header.Set("User-Agent", c.Parameters.UserAgent)
 
 	// Fire the request
 	var resp *http.Response
@@ -122,21 +65,18 @@ func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressRespons
 
 	// Cleanup
 	defer func() {
-		if bodyErr := resp.Body.Close(); bodyErr != nil {
-			log.Printf("error closing response body: %s", bodyErr.Error())
-		}
+		_ = resp.Body.Close()
 	}()
 
 	// Save the status
 	c.LastRequest.StatusCode = resp.StatusCode
 
 	// Handle errors
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != http.StatusOK {
 
 		// Decode the error message
-		if resp.StatusCode == 400 {
-			err = json.NewDecoder(resp.Body).Decode(&response)
-			if err != nil {
+		if resp.StatusCode == http.StatusBadRequest {
+			if err = json.NewDecoder(resp.Body).Decode(&response); err != nil {
 				return
 			}
 			if len(response.ErrorMessage) == 0 {
