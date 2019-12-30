@@ -1,6 +1,7 @@
 # go-polynym
 **go-polynym** is the unofficial golang implementation for the [Polynym API](https://polynym.io/)
 
+[![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-polynym)](https://golang.org/)
 [![Build Status](https://travis-ci.com/mrz1836/go-polynym.svg?branch=master&v=2)](https://travis-ci.com/mrz1836/go-polynym)
 [![Report](https://goreportcard.com/badge/github.com/mrz1836/go-polynym?style=flat&v=2)](https://goreportcard.com/report/github.com/mrz1836/go-polynym)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/85aed3f384894abc958e9fa1e7f2f7ac)](https://www.codacy.com/app/mrz1818/go-polynym?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mrz1836/go-polynym&amp;utm_campaign=Badge_Grade)
