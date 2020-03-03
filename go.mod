@@ -1,6 +1,6 @@
 module github.com/mrz1836/go-polynym
 
-go 1.13
+go 1.14
 
 require (
 	github.com/gojek/heimdall v5.0.2+incompatible
