@@ -25,13 +25,13 @@
 $ go get -u github.com/mrz1836/go-polynym
 ```
 
+## Documentation
+You can view the generated [documentation here](https://pkg.go.dev/github.com/mrz1836/go-polynym).
+
 ### Features
 - Resolves [RelayX Handles](https://relayx.io),  [$handcash handles](https://handcash.io), [Paymails](https://bsvalias.org/), and BitcoinSV addresses
 - [Client](client.go) is completely configurable
 - Using [heimdall http client](https://github.com/gojek/heimdall) with exponential backoff & more
-
-## Documentation
-You can view the generated [documentation here](https://pkg.go.dev/github.com/mrz1836/go-polynym).
 
 <details>
 <summary><strong><code>Library Deployment</code></strong></summary>
