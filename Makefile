@@ -3,9 +3,6 @@ COVER=go tool cover
 ## Default Repo Domain
 GIT_DOMAIN=github.com
 
-## Set the Github Token
-#GITHUB_TOKEN=<your_token>
-
 ## Automatically detect the repo owner and repo name
 REPO_NAME=$(shell basename `git rev-parse --show-toplevel`)
 REPO_OWNER=$(shell git config --get remote.origin.url | sed 's/git@$(GIT_DOMAIN)://g' | sed 's/\/$(REPO_NAME).git//g')
@@ -41,11 +38,11 @@ lint: ## Run the Go lint application
 	golint
 
 release: ## Full production release (creates release in Github)
-	 goreleaser --rm-dist
-	 make godocs
+	goreleaser --rm-dist
+	make godocs
 
 release-test: ## Full production test release (everything except deploy)
-	 goreleaser --skip-publish --rm-dist
+	goreleaser --skip-publish --rm-dist
 
 release-snap: ## Test the full release (build binaries)
 	goreleaser --snapshot --skip-publish --rm-dist
@@ -71,13 +68,13 @@ tag-update: ## Update an existing tag to current commit (IE: make tag-update ver
 	git fetch --tags -f
 
 test: ## Runs vet, lint and ALL tests
-	go vet -v
-	golint
+	make vet
+	make lint
 	go test ./... -v
 
 test-short: ## Runs vet, lint and tests (excludes integration tests)
-	go vet -v
-	golint
+	make vet
+	make lint
 	go test ./... -v -test.short
 
 update:  ## Update all project dependencies

@@ -1,5 +1,5 @@
 # go-polynym
-**go-polynym** is the unofficial golang implementation for the [Polynym API](https://polynym.io/)
+> The unofficial Go implementation for the [Polynym API](https://polynym.io/)
 
 [![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-polynym)](https://golang.org/)
 [![Build Status](https://travis-ci.com/mrz1836/go-polynym.svg?branch=master&v=2)](https://travis-ci.com/mrz1836/go-polynym)
@@ -21,8 +21,8 @@
 ## Installation
 
 **go-polynym** requires a [supported release of Go](https://golang.org/doc/devel/release.html#policy).
-```bash
-$ go get -u github.com/mrz1836/go-polynym
+```shell script
+go get -u github.com/mrz1836/go-polynym
 ```
 
 ## Documentation
@@ -47,8 +47,8 @@ Use `make release-snap` to create a snapshot version of the release, and finally
 <summary><strong><code>Makefile Commands</code></strong></summary>
 
 View all `makefile` commands
-```bash
-$ make help
+```shell script
+make help
 ```
 
 List of all current commands:
@@ -79,19 +79,19 @@ vet                            Run the Go vet application
 All unit tests and [examples](polynym_test.go) run via [Travis CI](https://travis-ci.org/mrz1836/go-polynym) and uses [Go version 1.14.x](https://golang.org/doc/go1.14). View the [deployment configuration file](.travis.yml).
 
 Run all tests (including integration tests)
-```bash
-$ make test
+```shell script
+make test
 ```
 
 Run tests (excluding integration tests)
-```bash
-$ make test-short
+```shell script
+make test-short
 ```
 
 ## Benchmarks
 Run the Go [benchmarks](polynym_test.go):
-```bash
-$ make bench
+```shell script
+make bench
 ```
 
 ## Code Standards
@@ -101,7 +101,7 @@ Read more about this Go project's [code standards](CODE_STANDARDS.md).
 - View the [polynym examples](#examples--tests) above
 
 Basic implementation:
-```golang
+```go
 package main
 
 import (
