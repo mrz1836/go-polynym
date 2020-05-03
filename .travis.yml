@@ -28,4 +28,8 @@ before_script:
 script:
  - golint
  - go vet
- - go test -short -v ./...
+ - go test -short -race -coverprofile=coverage.txt -covermode=atomic
+
+# After build success
+after_success:
+ - bash <(curl -s https://codecov.io/bash)
