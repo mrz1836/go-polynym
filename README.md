@@ -1,12 +1,15 @@
 # go-polynym
 > The unofficial Go implementation for the [Polynym API](https://polynym.io/)
 
-[![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-polynym)](https://golang.org/)
+[![Release](https://img.shields.io/github/release-pre/mrz1836/go-polynym.svg?logo=github&style=flat&v=1)](https://github.com/mrz1836/go-polynym/releases)
 [![Build Status](https://travis-ci.com/mrz1836/go-polynym.svg?branch=master&v=2)](https://travis-ci.com/mrz1836/go-polynym)
 [![Report](https://goreportcard.com/badge/github.com/mrz1836/go-polynym?style=flat&v=2)](https://goreportcard.com/report/github.com/mrz1836/go-polynym)
 [![codecov](https://codecov.io/gh/mrz1836/go-polynym/branch/master/graph/badge.svg?v=1)](https://codecov.io/gh/mrz1836/go-polynym)
-[![Release](https://img.shields.io/github/release-pre/mrz1836/go-polynym.svg?style=flat&v=1)](https://github.com/mrz1836/go-polynym/releases)
-[![GoDoc](https://godoc.org/github.com/mrz1836/go-polynym?status.svg&style=flat)](https://pkg.go.dev/github.com/mrz1836/go-polynym)
+[![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-polynym)](https://golang.org/)
+[![Sponsor](https://img.shields.io/badge/sponsor-MrZ-181717.svg?logo=github&style=flat&v=3)](https://github.com/sponsors/mrz1836)
+[![Donate](https://img.shields.io/badge/donate-bitcoin-ff9900.svg?logo=bitcoin&style=flat)](https://mrz1818.com/?tab=tips&af=go-polynym)
+
+<br/>
 
 ## Table of Contents
 - [Installation](#installation)
@@ -19,6 +22,8 @@
 - [Contributing](#contributing)
 - [License](#license)
 
+<br/>
+
 ## Installation
 
 **go-polynym** requires a [supported release of Go](https://golang.org/doc/devel/release.html#policy).
@@ -26,8 +31,12 @@
 go get -u github.com/mrz1836/go-polynym
 ```
 
+<br/>
+
 ## Documentation
-You can view the generated [documentation here](https://pkg.go.dev/github.com/mrz1836/go-polynym).
+View the generated [documentation](https://pkg.go.dev/github.com/mrz1836/go-polynym)
+
+[![GoDoc](https://godoc.org/github.com/mrz1836/go-polynym?status.svg&style=flat)](https://pkg.go.dev/github.com/mrz1836/go-polynym)
 
 ### Features
 - Resolves [RelayX Handles](https://relayx.io),  [$handcash handles](https://handcash.io), [Paymails](https://bsvalias.org/), and BitcoinSV addresses
@@ -77,6 +86,8 @@ vet                            Run the Go vet application
 ```
 </details>
 
+<br/>
+
 ## Examples & Tests
 All unit tests and [examples](polynym_test.go) run via [Travis CI](https://travis-ci.org/mrz1836/go-polynym) and uses [Go version 1.14.x](https://golang.org/doc/go1.14). View the [deployment configuration file](.travis.yml).
 
@@ -90,14 +101,20 @@ Run tests (excluding integration tests)
 make test-short
 ```
 
+<br/>
+
 ## Benchmarks
 Run the Go [benchmarks](polynym_test.go):
 ```shell script
 make bench
 ```
 
+<br/>
+
 ## Code Standards
 Read more about this Go project's [code standards](CODE_STANDARDS.md).
+
+<br/>
 
 ## Usage
 View the [polynym examples](#examples--tests) above
@@ -122,25 +139,33 @@ func main() {
 }
 ```
 
+<br/>
+
 ## Maintainers
 
 | [<img src="https://github.com/mrz1836.png" height="50" alt="MrZ" />](https://github.com/mrz1836) |
 |:---:|
 | [MrZ](https://github.com/mrz1836) |
 
+<br/>
+
 ## Contributing
 
 View the [contributing guidelines](CONTRIBUTING.md) and follow the [code of conduct](CODE_OF_CONDUCT.md).
 
-Support the development of this project 🙏
+### How can I help?
+All kinds of contributions are welcome :raised_hands:! 
+The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon:. 
+You can also support this project by [becoming a sponsor on GitHub](https://github.com/sponsors/mrz1836) :clap: 
+or by making a [**bitcoin donation**](https://mrz1818.com/?tab=tips&af=go-sanitize) to ensure this journey continues indefinitely! :rocket:
 
-[![Donate](https://img.shields.io/badge/donate-bitcoin-brightgreen.svg)](https://mrz1818.com/?tab=tips&af=go-polynym)
-
-#### Credits
+### Credits
 
 [@Dean](https://github.com/deanmlittle) & [BitPing](https://github.com/uptimesv) for their hard work on the [Polynym project](https://polynym.io/)
 
 Looking for a Javascript version? Check out the [Polynym npm package](https://www.npmjs.com/package/polynym).
+
+<br/>
 
 ## License
 
