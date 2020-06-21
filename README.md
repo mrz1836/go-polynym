@@ -39,7 +39,12 @@ View the generated [documentation](https://pkg.go.dev/github.com/mrz1836/go-poly
 [![GoDoc](https://godoc.org/github.com/mrz1836/go-polynym?status.svg&style=flat)](https://pkg.go.dev/github.com/mrz1836/go-polynym)
 
 ### Features
-- Resolves [RelayX Handles](https://tncpw.co/476be900),  [$handcash handles](https://tncpw.co/3ededfab), [Paymails](https://tncpw.co/036a9362), [Twetch UserIDs](https://tncpw.co/482e232d), and BitcoinSV addresses
+- Resolves all the following: 
+    - [RelayX Handles](https://tncpw.co/476be900)
+    - [$handcash handles](https://tncpw.co/3ededfab)
+    - [Paymails](https://tncpw.co/036a9362)
+    - [Twetch UserIDs](https://tncpw.co/482e232d)
+    - BitcoinSV addresses
 - [Client](client.go) is completely configurable
 - Using [heimdall http client](https://github.com/gojek/heimdall) with exponential backoff & more http options
 
