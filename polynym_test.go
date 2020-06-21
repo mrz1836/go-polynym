@@ -97,6 +97,17 @@ func TestClientDefaultOptions(t *testing.T) {
 	}
 }
 
+// TestClientDefaultOptions_NoRetry will set 0 retry counts
+func TestClientDefaultOptions_NoRetry(t *testing.T) {
+	options := ClientDefaultOptions()
+	options.RequestRetryCount = 0
+	client := NewClient(options)
+
+	if client.UserAgent != defaultUserAgent {
+		t.Errorf("user agent mismatch")
+	}
+}
+
 // TestGetAddress tests the GetAddress()
 func TestGetAddress(t *testing.T) {
 

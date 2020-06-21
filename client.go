@@ -109,7 +109,7 @@ func NewClient(options *Options) (c Client) {
 	}
 
 	// Determine the strategy for the http client (no retry enabled)
-	if options.RequestRetryCount <= 0 {
+	if options.RequestRetryCount == 0 {
 		c.httpClient = httpclient.NewClient(
 			httpclient.WithHTTPTimeout(options.RequestTimeout),
 			httpclient.WithHTTPClient(&http.Client{
