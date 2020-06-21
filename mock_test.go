@@ -61,6 +61,10 @@ func (m *mockHTTP) Do(req *http.Request) (*http.Response, error) {
 		resp.StatusCode = http.StatusOK
 		resp.Body = validResponse("19gKzz8XmFDyrpk4qFobG7qKoqybe78v9h", req.URL.String(), resp.StatusCode)
 
+	} else if strings.Contains(req.URL.String(), "error") {
+
+		return resp, fmt.Errorf("req error")
+
 	} else if strings.Contains(req.URL.String(), "16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA") {
 
 		// Valid BSV Address
@@ -120,7 +124,6 @@ func validResponse(address, url string, status int) io.ReadCloser {
 		Address: address,
 		LastRequest: &LastRequest{
 			Method:     http.MethodGet,
-			PostData:   url,
 			StatusCode: status,
 			URL:        url,
 		},
@@ -136,7 +139,6 @@ func invalidResponse(errorMessage, url string, status int) io.ReadCloser {
 		ErrorMessage: errorMessage,
 		LastRequest: &LastRequest{
 			Method:     http.MethodGet,
-			PostData:   url,
 			StatusCode: status,
 			URL:        url,
 		},

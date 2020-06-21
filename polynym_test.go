@@ -122,6 +122,7 @@ func TestGetAddress(t *testing.T) {
 		statusCode    int
 	}{
 		{"", "", true, http.StatusBadRequest},
+		{"error", "", true, http.StatusBadRequest},
 		{"doesnotexist@handcash.io", "", true, http.StatusBadRequest},
 		{"$mr-z", "124dwBFyFtkcNXGfVWQroGcT9ybnpQ3G3Z", false, http.StatusOK},
 		{"19gKzz8XmFDyrpk4qFobG7qKoqybe78v9h", "19gKzz8XmFDyrpk4qFobG7qKoqybe78v9h", false, http.StatusOK},
@@ -142,9 +143,9 @@ func TestGetAddress(t *testing.T) {
 		} else if output != nil && output.Address != test.expected && !test.expectedError {
 			t.Errorf("%s Failed: [%s] inputted and [%s] expected, received: [%s]", t.Name(), test.input, test.expected, output.Address)
 		} else if output != nil && output.LastRequest.Method != http.MethodGet {
-			t.Errorf("expected method to be %s, got %s", http.MethodGet, output.LastRequest.Method)
+			t.Errorf("%s Expected method to be %s, got %s, [%s] inputted", t.Name(), http.MethodGet, output.LastRequest.Method, test.input)
 		} else if output != nil && output.LastRequest.StatusCode != test.statusCode {
-			t.Errorf("expected status code to be %d, got %d", test.statusCode, output.LastRequest.StatusCode)
+			t.Errorf("%s Expected status code to be %d, got %d, [%s] inputted", t.Name(), test.statusCode, output.LastRequest.StatusCode, test.input)
 		}
 	}
 }

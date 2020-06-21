@@ -37,9 +37,8 @@ func GetAddress(client Client, handleOrAddress string) (response *GetAddressResp
 	// Store for debugging purposes
 	response = &GetAddressResponse{
 		LastRequest: &LastRequest{
-			Method:   http.MethodGet,
-			PostData: reqURL,
-			URL:      reqURL,
+			Method: http.MethodGet,
+			URL:    reqURL,
 		},
 	}
 
@@ -63,6 +62,9 @@ func GetAddress(client Client, handleOrAddress string) (response *GetAddressResp
 	// Fire the request
 	var resp *http.Response
 	if resp, err = client.httpClient.Do(req); err != nil {
+		if resp != nil {
+			response.LastRequest.StatusCode = resp.StatusCode
+		}
 		return
 	}
 

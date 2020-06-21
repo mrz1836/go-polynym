@@ -22,20 +22,20 @@ const (
 	apiEndpoint string = "https://api.polynym.io"
 )
 
-// httpInterface is used for the http client (mocking)
+// httpInterface is used for the http client (mocking heimdall)
 type httpInterface interface {
-	Get(url string, headers http.Header) (*http.Response, error)
-	Post(url string, body io.Reader, headers http.Header) (*http.Response, error)
-	Put(url string, body io.Reader, headers http.Header) (*http.Response, error)
-	Patch(url string, body io.Reader, headers http.Header) (*http.Response, error)
+	AddPlugin(p heimdall.Plugin)
 	Delete(url string, headers http.Header) (*http.Response, error)
 	Do(req *http.Request) (*http.Response, error)
-	AddPlugin(p heimdall.Plugin)
+	Get(url string, headers http.Header) (*http.Response, error)
+	Patch(url string, body io.Reader, headers http.Header) (*http.Response, error)
+	Post(url string, body io.Reader, headers http.Header) (*http.Response, error)
+	Put(url string, body io.Reader, headers http.Header) (*http.Response, error)
 }
 
 // Client is the parent struct that wraps the heimdall client
 type Client struct {
-	httpClient httpInterface // carries out the http operations
+	httpClient httpInterface // carries out the http operations (heimdall client)
 	UserAgent  string        // (optional for changing user agents)
 }
 
@@ -58,14 +58,13 @@ type Options struct {
 
 // LastRequest is used to track what was submitted via the Request
 type LastRequest struct {
-	Method     string `json:"method"`      // method is the HTTP method used
-	PostData   string `json:"post_data"`   // postData is the post data submitted if POST/PUT request
-	StatusCode int    `json:"status_code"` // statusCode is the last code from the request
-	URL        string `json:"url"`         // url is the url used for the request
+	Method     string `json:"method"`      // Method is the HTTP method used
+	StatusCode int    `json:"status_code"` // StatusCode is the last code from the request
+	URL        string `json:"url"`         // URL is the url used for the request
 }
 
 // ClientDefaultOptions will return an Options struct with the default settings
-// Useful for starting with the default and then modifying as needed
+// Useful for starting with the base defaults and then modifying as needed
 func ClientDefaultOptions() (clientOptions *Options) {
 	return &Options{
 		BackOffExponentFactor:          2.0,
@@ -94,6 +93,9 @@ func NewClient(options *Options) (c Client) {
 	if options == nil {
 		options = ClientDefaultOptions()
 	}
+
+	// Set the user agent from options
+	c.UserAgent = options.UserAgent
 
 	// dial is the net dialer for clientDefaultTransport
 	dial := &net.Dialer{KeepAlive: options.DialerKeepAlive, Timeout: options.DialerTimeout}
@@ -137,7 +139,5 @@ func NewClient(options *Options) (c Client) {
 		)
 	}
 
-	// Set the user agent from options
-	c.UserAgent = options.UserAgent
 	return
 }
