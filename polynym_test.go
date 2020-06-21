@@ -123,6 +123,8 @@ func TestGetAddress(t *testing.T) {
 	}{
 		{"", "", true, http.StatusBadRequest},
 		{"error", "", true, http.StatusBadRequest},
+		{"bad-poly-response", "", true, http.StatusBadRequest},
+		{"bad-poly-status", "", true, http.StatusBadRequest},
 		{"doesnotexist@handcash.io", "", true, http.StatusBadRequest},
 		{"$mr-z", "124dwBFyFtkcNXGfVWQroGcT9ybnpQ3G3Z", false, http.StatusOK},
 		{"19gKzz8XmFDyrpk4qFobG7qKoqybe78v9h", "19gKzz8XmFDyrpk4qFobG7qKoqybe78v9h", false, http.StatusOK},
