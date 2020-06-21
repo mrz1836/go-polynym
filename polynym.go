@@ -23,29 +23,32 @@ import (
 
 // GetAddressResponse is what polynym returns (success or fail)
 type GetAddressResponse struct {
-	Address      string `json:"address"`
-	ErrorMessage string `json:"error"`
+	Address      string       `json:"address"`
+	ErrorMessage string       `json:"error"`
+	LastRequest  *LastRequest `json:"-"`
 }
 
-// NewClient creates a new client to submit requests
-func NewClient(clientOptions *Options) (c *Client, err error) {
-
-	// Create a client using the given options
-	c = createClient(clientOptions)
-
-	return
-}
-
-// GetAddress returns the address of a given 1handle, $handcash, paymail or BitcoinSV address
-func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressResponse, err error) {
+// GetAddress returns the address of a given 1handle, $handcash, paymail, Twetch user id or BitcoinSV address
+func GetAddress(client Client, handleOrAddress string) (response *GetAddressResponse, err error) {
 
 	// Set the API url
-	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", detectHandCash(handleOrAddress))
+	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", HandCashConvert(handleOrAddress))
 
 	// Store for debugging purposes
-	c.LastRequest.Method = http.MethodGet
-	c.LastRequest.URL = reqURL
-	c.LastRequest.PostData = reqURL
+	response = &GetAddressResponse{
+		LastRequest: &LastRequest{
+			Method:   http.MethodGet,
+			PostData: reqURL,
+			URL:      reqURL,
+		},
+	}
+
+	// Check for a value
+	if len(handleOrAddress) == 0 {
+		response.LastRequest.StatusCode = http.StatusBadRequest
+		err = fmt.Errorf("missing handle or paymail to resolve")
+		return
+	}
 
 	// Start the request
 	var req *http.Request
@@ -55,11 +58,11 @@ func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressRespons
 
 	// Set the header (user agent is in case they block default Go user agents)
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("User-Agent", c.Parameters.UserAgent)
+	req.Header.Set("User-Agent", client.UserAgent)
 
 	// Fire the request
 	var resp *http.Response
-	if resp, err = http.DefaultClient.Do(req); err != nil {
+	if resp, err = client.httpClient.Do(req); err != nil {
 		return
 	}
 
@@ -68,8 +71,8 @@ func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressRespons
 		_ = resp.Body.Close()
 	}()
 
-	// Save the status
-	c.LastRequest.StatusCode = resp.StatusCode
+	// Set the status
+	response.LastRequest.StatusCode = resp.StatusCode
 
 	// Handle errors
 	if resp.StatusCode != http.StatusOK {
@@ -90,15 +93,15 @@ func (c *Client) GetAddress(handleOrAddress string) (response *GetAddressRespons
 		return
 	}
 
-	// Try and decode the transactions
+	// Try and decode the response
 	err = json.NewDecoder(resp.Body).Decode(&response)
 
 	return
 }
 
-// detectHandCash now converts $handles to handle@handcash.io
-func detectHandCash(handle string) string {
-	if strings.Contains(handle, "$") {
+// HandCashConvert now converts $handles to handle@handcash.io
+func HandCashConvert(handle string) string {
+	if strings.HasPrefix(handle, "$") {
 		handle = strings.Replace(handle, "$", "", -1) + "@handcash.io"
 	}
 	return handle

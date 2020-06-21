@@ -1,6 +1,7 @@
 package polynym
 
 import (
+	"io"
 	"net"
 	"net/http"
 	"time"
@@ -12,7 +13,7 @@ import (
 const (
 
 	// version is the current version
-	version = "v1"
+	version = "v0.3.0"
 
 	// defaultUserAgent is the default user agent for all requests
 	defaultUserAgent string = "go-polynym: " + version
@@ -21,11 +22,21 @@ const (
 	apiEndpoint string = "https://api.polynym.io"
 )
 
+// httpInterface is used for the http client (mocking)
+type httpInterface interface {
+	Get(url string, headers http.Header) (*http.Response, error)
+	Post(url string, body io.Reader, headers http.Header) (*http.Response, error)
+	Put(url string, body io.Reader, headers http.Header) (*http.Response, error)
+	Patch(url string, body io.Reader, headers http.Header) (*http.Response, error)
+	Delete(url string, headers http.Header) (*http.Response, error)
+	Do(req *http.Request) (*http.Response, error)
+	AddPlugin(p heimdall.Plugin)
+}
+
 // Client is the parent struct that wraps the heimdall client
 type Client struct {
-	httpClient  heimdall.Client // carries out the http operations
-	LastRequest *LastRequest    // is the raw information from the last request
-	Parameters  *Parameters     // contains application specific values
+	httpClient httpInterface // carries out the http operations
+	UserAgent  string        // (optional for changing user agents)
 }
 
 // Options holds all the configuration for connection, dialer and transport
@@ -45,17 +56,12 @@ type Options struct {
 	UserAgent                      string        `json:"user_agent"`
 }
 
-// LastRequest is used to track what was submitted via the Request()
+// LastRequest is used to track what was submitted via the Request
 type LastRequest struct {
 	Method     string `json:"method"`      // method is the HTTP method used
 	PostData   string `json:"post_data"`   // postData is the post data submitted if POST/PUT request
 	StatusCode int    `json:"status_code"` // statusCode is the last code from the request
 	URL        string `json:"url"`         // url is the url used for the request
-}
-
-// Parameters are application specific values for requests
-type Parameters struct {
-	UserAgent string // (optional for changing user agents)
 }
 
 // ClientDefaultOptions will return an Options struct with the default settings
@@ -78,11 +84,11 @@ func ClientDefaultOptions() (clientOptions *Options) {
 	}
 }
 
-// createClient will make a new http client based on the options provided
-func createClient(options *Options) (c *Client) {
+// NewClient will make a new http client based on the options provided
+func NewClient(options *Options) (c Client) {
 
 	// Create a client
-	c = new(Client)
+	c = Client{}
 
 	// Set options (either default or user modified)
 	if options == nil {
@@ -131,10 +137,7 @@ func createClient(options *Options) (c *Client) {
 		)
 	}
 
-	// Create a last request and parameters struct
-	c.LastRequest = new(LastRequest)
-	c.Parameters = &Parameters{
-		UserAgent: options.UserAgent,
-	}
+	// Set the user agent from options
+	c.UserAgent = options.UserAgent
 	return
 }

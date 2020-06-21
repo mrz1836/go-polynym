@@ -39,9 +39,9 @@ View the generated [documentation](https://pkg.go.dev/github.com/mrz1836/go-poly
 [![GoDoc](https://godoc.org/github.com/mrz1836/go-polynym?status.svg&style=flat)](https://pkg.go.dev/github.com/mrz1836/go-polynym)
 
 ### Features
-- Resolves [RelayX Handles](https://relayx.io),  [$handcash handles](https://handcash.io), [Paymails](https://bsvalias.org/), and BitcoinSV addresses
+- Resolves [RelayX Handles](https://tncpw.co/476be900),  [$handcash handles](https://tncpw.co/3ededfab), [Paymails](https://tncpw.co/036a9362), [Twetch UserIDs](https://tncpw.co/482e232d), and BitcoinSV addresses
 - [Client](client.go) is completely configurable
-- Using [heimdall http client](https://github.com/gojek/heimdall) with exponential backoff & more
+- Using [heimdall http client](https://github.com/gojek/heimdall) with exponential backoff & more http options
 
 <details>
 <summary><strong><code>Library Deployment</code></strong></summary>
@@ -136,12 +136,10 @@ import (
 )
 
 func main() {
+	client := polynym.NewClient(nil)
+	resp, _ := polynym.GetAddress(client, "mrz@relayx.io")
 
-	// Start a new client and resolve
-	client, _ := polynym.NewClient(nil)
-	resp, _ := client.GetAddress("mrz@moneybutton.com")
-
-	log.Println("address:", resp.Address)
+	log.Println("address: ", resp.Address)
 }
 ```
 
@@ -166,7 +164,7 @@ or by making a [**bitcoin donation**](https://mrz1818.com/?tab=tips&af=go-polyny
 
 ### Credits
 
-[@Dean](https://github.com/deanmlittle) & [BitPing](https://github.com/uptimesv) for their hard work on the [Polynym project](https://polynym.io/)
+[@Dean](https://github.com/deanmlittle) & [BitPing](https://github.com/uptimesv) for their hard work on the [Polynym project](https://tncpw.co/a2bb8168)
 
 Looking for a Javascript version? Check out the [Polynym npm package](https://www.npmjs.com/package/polynym).
 

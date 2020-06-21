@@ -12,18 +12,14 @@ import (
 func main() {
 
 	// Start a new client
-	client, err := polynym.NewClient(nil)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	client := polynym.NewClient(nil)
 
-	// Resolve a handle
-	var resp *polynym.GetAddressResponse
-	resp, err = client.GetAddress("mrz@moneybutton.com")
+	// Resolve a handle or paymail
+	resp, err := polynym.GetAddress(client, "mrz@relayx.io")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
 	// Success
-	log.Println("address:", resp.Address)
+	log.Println("address: ", resp.Address)
 }

@@ -2,39 +2,45 @@ package polynym
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"testing"
 )
 
+// newMockClient will create a new mock client for testing
+func newMockClient(userAgent string) Client {
+	return Client{
+		httpClient: &mockHTTP{},
+		UserAgent:  userAgent,
+	}
+}
+
 // TestNewClient test new client
 func TestNewClient(t *testing.T) {
-	client, err := NewClient(nil)
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := NewClient(nil)
 
-	if len(client.Parameters.UserAgent) == 0 {
+	if len(client.UserAgent) == 0 {
 		t.Fatal("missing user agent")
 	}
 }
 
 // ExampleNewClient example using NewClient()
 func ExampleNewClient() {
-	client, _ := NewClient(nil)
-	fmt.Println(client.Parameters.UserAgent)
-	// Output:go-polynym: v1
+	client := NewClient(nil)
+	fmt.Println(client.UserAgent)
+	// Output:go-polynym: v0.3.0
 }
 
 // BenchmarkNewClient benchmarks the NewClient method
 func BenchmarkNewClient(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, _ = NewClient(nil)
+		_ = NewClient(nil)
 	}
 }
 
-// TestDefaultOptions tests setting ClientDefaultOptions()
-func TestDefaultOptions(t *testing.T) {
+// TestClientDefaultOptions tests setting ClientDefaultOptions()
+func TestClientDefaultOptions(t *testing.T) {
 
 	options := ClientDefaultOptions()
 
@@ -91,114 +97,86 @@ func TestDefaultOptions(t *testing.T) {
 	}
 }
 
-// TestClient_GetAddress tests the GetAddress()
-func TestClient_GetAddress(t *testing.T) {
-	// Skip this test in short mode (not needed)
-	if testing.Short() {
-		t.Skip("skipping testing in short mode")
+// TestGetAddress tests the GetAddress()
+func TestGetAddress(t *testing.T) {
+
+	// Create a mock client
+	client := newMockClient(defaultUserAgent)
+
+	// Create the list of tests
+	var tests = []struct {
+		input         string
+		expected      string
+		expectedError bool
+		statusCode    int
+	}{
+		{"", "", true, http.StatusBadRequest},
+		{"doesnotexist@handcash.io", "", true, http.StatusBadRequest},
+		{"$mr-z", "124dwBFyFtkcNXGfVWQroGcT9ybnpQ3G3Z", false, http.StatusOK},
+		{"19gKzz8XmFDyrpk4qFobG7qKoqybe78v9h", "19gKzz8XmFDyrpk4qFobG7qKoqybe78v9h", false, http.StatusOK},
+		{"1doesnotexisthandle", "", true, http.StatusBadRequest},
+		{"1mrz", "1Lti3s6AQNKTSgxnTyBREMa6XdHLBnPSKa", false, http.StatusOK},
+		{"bad@paymailaddress.com", "", true, http.StatusBadRequest},
+		{"c6ZqP5Tb22KJuvSAbjNkoi", "", true, http.StatusBadRequest},
+		{"mrz@handcash.io", "19gKzz8XmFDyrpk4qFobG7qKoqybe78v9h", false, http.StatusOK},
+		{"@833", "19ksW6ueSw9nEj88X3QNJ9VkKPGf1zuKbQ", false, http.StatusOK},
 	}
 
-	// Create a new client object to handle your queries
-	client, err := NewClient(nil)
-	if err != nil {
-		t.Fatal(err)
+	// Test all
+	for _, test := range tests {
+		if output, err := GetAddress(client, test.input); err == nil && test.expectedError {
+			t.Errorf("%s Failed: expected to throw an error, no error [%s] inputted and [%s] expected", t.Name(), test.input, test.expected)
+		} else if err != nil && !test.expectedError {
+			t.Errorf("%s Failed: [%s] inputted and [%s] expected, received: [%v] error [%s]", t.Name(), test.input, test.expected, output, err.Error())
+		} else if output != nil && output.Address != test.expected && !test.expectedError {
+			t.Errorf("%s Failed: [%s] inputted and [%s] expected, received: [%s]", t.Name(), test.input, test.expected, output.Address)
+		} else if output != nil && output.LastRequest.Method != http.MethodGet {
+			t.Errorf("expected method to be %s, got %s", http.MethodGet, output.LastRequest.Method)
+		} else if output != nil && output.LastRequest.StatusCode != test.statusCode {
+			t.Errorf("expected status code to be %d, got %d", test.statusCode, output.LastRequest.StatusCode)
+		}
 	}
-
-	address := "16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA"
-	var resp *GetAddressResponse
-	resp, err = client.GetAddress(address)
-	if err != nil {
-		t.Fatal("error occurred: " + err.Error())
-	}
-
-	if resp.Address != address {
-		t.Fatal("address should have resolved:", address)
-	}
-
 }
 
-// TestClient_GetAddressRelayX tests the GetAddress()
-func TestClient_GetAddressRelayX(t *testing.T) {
-	// Skip this test in short mode (not needed)
-	if testing.Short() {
-		t.Skip("skipping testing in short mode")
-	}
-
-	// Create a new client object to handle your queries
-	client, err := NewClient(nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	address := "1mrz"
-	var resp *GetAddressResponse
-	resp, err = client.GetAddress(address)
-	if err != nil {
-		t.Fatal("error occurred: " + err.Error())
-	}
-
-	if len(resp.Address) == 0 {
-		t.Fatal("address should have resolved:", address)
-	}
-
-}
-
-// TestClient_GetAddressPaymail tests the GetAddress()
-func TestClient_GetAddressPaymail(t *testing.T) {
-	// Skip this test in short mode (not needed)
-	if testing.Short() {
-		t.Skip("skipping testing in short mode")
-	}
-
-	// Create a new client object to handle your queries
-	client, err := NewClient(nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	address := "mrz@moneybutton.com"
-	var resp *GetAddressResponse
-	resp, err = client.GetAddress(address)
-	if err != nil {
-		t.Fatal("error occurred: " + err.Error())
-	}
-
-	if len(resp.Address) == 0 {
-		t.Fatal("address should have resolved:", address)
-	}
-
-}
-
-// TestClient_GetAddressHandCash tests the GetAddressHandCash()
-func TestClient_GetAddressHandCash(t *testing.T) {
-	// Skip this test in short mode (not needed)
-	if testing.Short() {
-		t.Skip("skipping testing in short mode")
-	}
-
-	// Create a new client object to handle your queries
-	client, err := NewClient(nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	address := "$handcash"
-	var resp *GetAddressResponse
-	resp, err = client.GetAddress(address)
-	if err != nil {
-		t.Fatal("error occurred: " + err.Error())
-	}
-
-	if len(resp.Address) == 0 {
-		t.Fatal("address should have resolved:", address)
-	}
-
-}
-
-// ExampleClient_GetAddress example using GetAddress()
-func ExampleClient_GetAddress() {
-	client, _ := NewClient(nil)
-	resp, _ := client.GetAddress("16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA") //mrz@moneybutton.com
+// ExampleGetAddress example using GetAddress()
+func ExampleGetAddress() {
+	client := newMockClient(defaultUserAgent)
+	resp, _ := GetAddress(client, "16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA")
 	fmt.Println(resp.Address)
 	// Output:16ZqP5Tb22KJuvSAbjNkoiZs13mmRmexZA
+}
+
+// TestHandCashConvert will test the HandCashConvert() method
+func TestHandCashConvert(t *testing.T) {
+	// Create the list of tests
+	var tests = []struct {
+		input    string
+		expected string
+	}{
+		{"$mr-z", "mr-z@handcash.io"},
+		{"invalid$mr-z", "invalid$mr-z"},
+		{"$", "@handcash.io"},
+		{"1handle", "1handle"},
+	}
+
+	// Test all
+	for _, test := range tests {
+		if output := HandCashConvert(test.input); output != test.expected {
+			t.Errorf("%s Failed: [%s] inputted and [%s] expected, received: [%s]", t.Name(), test.input, test.expected, output)
+		}
+	}
+}
+
+// ExampleHandCashConvert example using HandCashConvert()
+func ExampleHandCashConvert() {
+	paymail := HandCashConvert("$mr-z")
+	fmt.Println(paymail)
+	// Output:mr-z@handcash.io
+}
+
+// BenchmarkHandCashConvert benchmarks the HandCashConvert method
+func BenchmarkHandCashConvert(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = HandCashConvert("$mr-z")
+	}
 }
