@@ -1,7 +1,6 @@
 package polynym
 
 import (
-	"io"
 	"net"
 	"net/http"
 	"time"
@@ -24,13 +23,7 @@ const (
 
 // httpInterface is used for the http client (mocking heimdall)
 type httpInterface interface {
-	AddPlugin(p heimdall.Plugin)
-	Delete(url string, headers http.Header) (*http.Response, error)
 	Do(req *http.Request) (*http.Response, error)
-	Get(url string, headers http.Header) (*http.Response, error)
-	Patch(url string, body io.Reader, headers http.Header) (*http.Response, error)
-	Post(url string, body io.Reader, headers http.Header) (*http.Response, error)
-	Put(url string, body io.Reader, headers http.Header) (*http.Response, error)
 }
 
 // Client is the parent struct that wraps the heimdall client
