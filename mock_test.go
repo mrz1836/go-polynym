@@ -8,43 +8,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-
-	"github.com/gojektech/heimdall/v6"
 )
 
 // mockHTTP for mocking requests
 type mockHTTP struct{}
-
-// Get is a mock http request
-func (m *mockHTTP) Get(url string, headers http.Header) (*http.Response, error) {
-
-	return nil, nil
-}
-
-// Post is a mock http request
-func (m *mockHTTP) Post(url string, body io.Reader, headers http.Header) (*http.Response, error) {
-	return nil, nil
-}
-
-// Put is a mock http request
-func (m *mockHTTP) Put(url string, body io.Reader, headers http.Header) (*http.Response, error) {
-	return nil, nil
-}
-
-// Patch is a mock http request
-func (m *mockHTTP) Patch(url string, body io.Reader, headers http.Header) (*http.Response, error) {
-	return nil, nil
-}
-
-// Delete is a mock http request
-func (m *mockHTTP) Delete(url string, headers http.Header) (*http.Response, error) {
-	return nil, nil
-}
-
-// AddPlugin is a mock http request
-func (m *mockHTTP) AddPlugin(p heimdall.Plugin) {
-	return
-}
 
 // Do is a mock http request
 func (m *mockHTTP) Do(req *http.Request) (*http.Response, error) {
