@@ -29,10 +29,10 @@ type GetAddressResponse struct {
 }
 
 // GetAddress returns the address of a given 1handle, $handcash, paymail, Twetch user id or BitcoinSV address
-func GetAddress(client Client, handleOrAddress string) (response *GetAddressResponse, err error) {
+func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResponse, err error) {
 
 	// Set the API url
-	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", HandCashConvert(handleOrAddress))
+	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", HandCashConvert(handleOrPaymail))
 
 	// Store for debugging purposes
 	response = &GetAddressResponse{
@@ -43,7 +43,7 @@ func GetAddress(client Client, handleOrAddress string) (response *GetAddressResp
 	}
 
 	// Check for a value
-	if len(handleOrAddress) == 0 {
+	if len(handleOrPaymail) == 0 {
 		response.LastRequest.StatusCode = http.StatusBadRequest
 		err = fmt.Errorf("missing handle or paymail to resolve")
 		return
@@ -101,10 +101,10 @@ func GetAddress(client Client, handleOrAddress string) (response *GetAddressResp
 	return
 }
 
-// HandCashConvert now converts $handles to handle@handcash.io
+// HandCashConvert now converts $handle to paymail: handle@handcash.io
 func HandCashConvert(handle string) string {
 	if strings.HasPrefix(handle, "$") {
-		handle = strings.Replace(handle, "$", "", -1) + "@handcash.io"
+		return strings.Replace(handle, "$", "", -1) + "@handcash.io"
 	}
 	return handle
 }
