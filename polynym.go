@@ -32,7 +32,8 @@ type GetAddressResponse struct {
 func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResponse, err error) {
 
 	// Set the API url
-	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", HandCashConvert(handleOrPaymail))
+	// todo: beta is temporary, and only used via the method directly
+	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", HandCashConvert(handleOrPaymail, false))
 
 	// Store for debugging purposes
 	response = &GetAddressResponse{
@@ -101,9 +102,12 @@ func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResp
 	return
 }
 
-// HandCashConvert now converts $handle to paymail: handle@handcash.io
-func HandCashConvert(handle string) string {
+// HandCashConvert now converts $handle to paymail: handle@handcash.io or handle@beta.handcash.io
+func HandCashConvert(handle string, isBeta bool) string {
 	if strings.HasPrefix(handle, "$") {
+		if isBeta {
+			return strings.ToLower(strings.Replace(handle, "$", "", -1)) + "@beta.handcash.io"
+		}
 		return strings.ToLower(strings.Replace(handle, "$", "", -1)) + "@handcash.io"
 	}
 	return handle

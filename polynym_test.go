@@ -74,17 +74,20 @@ func TestHandCashConvert(t *testing.T) {
 	// Create the list of tests
 	var tests = []struct {
 		input    string
+		beta     bool
 		expected string
 	}{
-		{"$mr-z", "mr-z@handcash.io"},
-		{"invalid$mr-z", "invalid$mr-z"},
-		{"$", "@handcash.io"},
-		{"1handle", "1handle"},
+		{"$mr-z", false, "mr-z@handcash.io"},
+		{"invalid$mr-z", false, "invalid$mr-z"},
+		{"$", false, "@handcash.io"},
+		{"$", true, "@beta.handcash.io"},
+		{"1handle", false, "1handle"},
+		{"$misterz", true, "misterz@beta.handcash.io"},
 	}
 
 	// Test all
 	for _, test := range tests {
-		if output := HandCashConvert(test.input); output != test.expected {
+		if output := HandCashConvert(test.input, test.beta); output != test.expected {
 			t.Errorf("%s Failed: [%s] inputted and [%s] expected, received: [%s]", t.Name(), test.input, test.expected, output)
 		}
 	}
@@ -92,7 +95,7 @@ func TestHandCashConvert(t *testing.T) {
 
 // ExampleHandCashConvert example using HandCashConvert()
 func ExampleHandCashConvert() {
-	paymail := HandCashConvert("$mr-z")
+	paymail := HandCashConvert("$mr-z", false)
 	fmt.Println(paymail)
 	// Output:mr-z@handcash.io
 }
@@ -100,6 +103,6 @@ func ExampleHandCashConvert() {
 // BenchmarkHandCashConvert benchmarks the HandCashConvert method
 func BenchmarkHandCashConvert(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = HandCashConvert("$mr-z")
+		_ = HandCashConvert("$mr-z", false)
 	}
 }
