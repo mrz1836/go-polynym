@@ -3,6 +3,7 @@ github.com/afex/hystrix-go v0.0.0-20180209013831-27fae8d30f1a/go.mod h1:SkGFH1ia
 github.com/cactus/go-statsd-client/statsd v0.0.0-20200423205355-cb0885a1018c/go.mod h1:l/bIBLeOl9eX+wxJAzxS4TveKRtAqlyDpHjhkfO0MEI=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/gojektech/heimdall/v6 v6.1.0 h1:M9L1xryMKGWUlAA33D0r0BaKiXWzvuReltDPPkC5loM=
 github.com/gojektech/heimdall/v6 v6.1.0/go.mod h1:8g/ohsh0GXn8fzOf+qVrjX5pQLf7qQy8vEBjBUJ/9L4=

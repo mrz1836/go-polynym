@@ -87,7 +87,7 @@ func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResp
 			if len(response.ErrorMessage) == 0 {
 				response.ErrorMessage = "unknown error resolving address"
 			}
-			err = fmt.Errorf("error: %s", response.ErrorMessage)
+			err = fmt.Errorf("%s", response.ErrorMessage)
 		} else {
 			err = fmt.Errorf("bad response from polynym: %d", resp.StatusCode)
 		}
@@ -104,7 +104,7 @@ func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResp
 // HandCashConvert now converts $handle to paymail: handle@handcash.io
 func HandCashConvert(handle string) string {
 	if strings.HasPrefix(handle, "$") {
-		return strings.Replace(handle, "$", "", -1) + "@handcash.io"
+		return strings.ToLower(strings.Replace(handle, "$", "", -1)) + "@handcash.io"
 	}
 	return handle
 }
