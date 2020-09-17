@@ -106,3 +106,43 @@ func BenchmarkHandCashConvert(b *testing.B) {
 		_ = HandCashConvert("$mr-z", false)
 	}
 }
+
+// TestRelayXConvert will test the RelayXConvert() method
+func TestRelayXConvert(t *testing.T) {
+	t.Parallel()
+
+	// Create the list of tests
+	var tests = []struct {
+		input    string
+		expected string
+	}{
+		{"1mr-z", "mr-z@relayx.io"},
+		{"invalid1mr-z", "invalid1mr-z"},
+		{"1", "@relayx.io"},
+		{"1mrz", "mrz@relayx.io"},
+		{"1handle", "handle@relayx.io"},
+		{"1misterz", "misterz@relayx.io"},
+		{"mrz@relayx.io", "mrz@relayx.io"},
+	}
+
+	// Test all
+	for _, test := range tests {
+		if output := RelayXConvert(test.input); output != test.expected {
+			t.Errorf("%s Failed: [%s] inputted and [%s] expected, received: [%s]", t.Name(), test.input, test.expected, output)
+		}
+	}
+}
+
+// ExampleHandCashConvert example using RelayXConvert()
+func ExampleRelayXConvert() {
+	paymail := RelayXConvert("1mr-z")
+	fmt.Println(paymail)
+	// Output:mr-z@relayx.io
+}
+
+// BenchmarkHandCashConvert benchmarks the RelayXConvert method
+func BenchmarkRelayXConvert(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = RelayXConvert("1mr-z")
+	}
+}

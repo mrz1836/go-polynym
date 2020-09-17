@@ -31,9 +31,16 @@ type GetAddressResponse struct {
 // GetAddress returns the address of a given 1handle, $handcash, paymail, Twetch user id or BitcoinSV address
 func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResponse, err error) {
 
+	// Convert handle to paymail if detected
+	if strings.Contains(handleOrPaymail, "$") {
+		handleOrPaymail = HandCashConvert(handleOrPaymail, false)
+	} else if strings.HasPrefix(handleOrPaymail, "1") && len(handleOrPaymail) < 25 {
+		handleOrPaymail = RelayXConvert(handleOrPaymail)
+	}
+
 	// Set the API url
 	// todo: beta is temporary, and only used via the method directly
-	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", HandCashConvert(handleOrPaymail, false))
+	reqURL := fmt.Sprintf("%s/%s/%s", apiEndpoint, "getAddress", handleOrPaymail)
 
 	// Store for debugging purposes
 	response = &GetAddressResponse{
@@ -71,7 +78,10 @@ func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResp
 
 	// Cleanup
 	defer func() {
-		_ = resp.Body.Close()
+		if resp.Body != nil {
+			_ = resp.Body.Close()
+		}
+
 	}()
 
 	// Set the status
@@ -82,6 +92,10 @@ func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResp
 
 		// Decode the error message
 		if resp.StatusCode == http.StatusBadRequest {
+			if resp.Body == nil {
+				err = fmt.Errorf("no response body found")
+				return
+			}
 			if err = json.NewDecoder(resp.Body).Decode(&response); err != nil {
 				return
 			}
@@ -109,6 +123,14 @@ func HandCashConvert(handle string, isBeta bool) string {
 			return strings.ToLower(strings.Replace(handle, "$", "", -1)) + "@beta.handcash.io"
 		}
 		return strings.ToLower(strings.Replace(handle, "$", "", -1)) + "@handcash.io"
+	}
+	return handle
+}
+
+// RelayXConvert now converts 1handle to paymail: handle@relayx.io
+func RelayXConvert(handle string) string {
+	if strings.HasPrefix(handle, "1") && len(handle) < 25 {
+		return strings.ToLower(strings.Replace(handle, "1", "", -1)) + "@relayx.io"
 	}
 	return handle
 }

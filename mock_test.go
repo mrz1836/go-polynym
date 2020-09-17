@@ -69,7 +69,7 @@ func (m *mockHTTP) Do(req *http.Request) (*http.Response, error) {
 		// Invalid paymail
 		resp.Body = invalidResponse("PayMail not found", req.URL.String(), resp.StatusCode)
 
-	} else if strings.Contains(req.URL.String(), "/1mrz") {
+	} else if strings.Contains(req.URL.String(), "/mrz@relayx.io") {
 
 		// Valid 1handle
 		resp.StatusCode = http.StatusOK
