@@ -15,6 +15,7 @@ log.Println("address:", resp.Address)
 package polynym
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -59,7 +60,7 @@ func GetAddress(client Client, handleOrPaymail string) (response *GetAddressResp
 
 	// Start the request
 	var req *http.Request
-	if req, err = http.NewRequest(http.MethodGet, reqURL, nil); err != nil {
+	if req, err = http.NewRequestWithContext(context.Background(), http.MethodGet, reqURL, nil); err != nil {
 		return
 	}
 
