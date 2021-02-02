@@ -21,7 +21,7 @@ func TestNewClient(t *testing.T) {
 func ExampleNewClient() {
 	client := NewClient(nil)
 	fmt.Println(client.UserAgent)
-	// Output:go-polynym: v0.4.4
+	// Output:go-polynym: v0.4.5
 }
 
 // BenchmarkNewClient benchmarks the NewClient method
