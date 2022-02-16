@@ -107,7 +107,7 @@ func validResponse(address, url string, status int) io.ReadCloser {
 		},
 	}
 
-	b, _ := json.Marshal(result)
+	b, _ := json.Marshal(result) // nolint: errchkjson // used in testing
 	return ioutil.NopCloser(bytes.NewBuffer(b))
 }
 
@@ -122,6 +122,6 @@ func invalidResponse(errorMessage, url string, status int) io.ReadCloser {
 		},
 	}
 
-	b, _ := json.Marshal(result)
+	b, _ := json.Marshal(result) // nolint: errchkjson // used in testing
 	return ioutil.NopCloser(bytes.NewBuffer(b))
 }
