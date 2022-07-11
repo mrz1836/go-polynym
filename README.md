@@ -40,10 +40,10 @@ View the generated [documentation](https://pkg.go.dev/github.com/mrz1836/go-poly
 
 ### Features
 - Resolves all the following: 
-    - [RelayX Handles](https://tncpw.co/476be900)
-    - [$handcash handles](https://tncpw.co/3ededfab)
-    - [Paymails](https://tncpw.co/036a9362)
-    - [Twetch UserIDs](https://tncpw.co/482e232d)
+    - [RelayX Handles](https://tpow.app/476be900)
+    - [$handcash handles](https://tpow.app/3ededfab)
+    - [Paymails](https://tpow.app/036a9362)
+    - [Twetch UserIDs](https://tpow.app/482e232d)
     - BitcoinSV addresses
 - [Client](client.go) is completely configurable
 - Using [heimdall http client](https://github.com/gojek/heimdall) with exponential backoff & more http options
@@ -180,7 +180,7 @@ or by making a [**bitcoin donation**](https://mrz1818.com/?tab=tips&af=go-polyny
 
 ### Credits
 
-[@Dean](https://github.com/deanmlittle) & [BitPing](https://github.com/uptimesv) for their hard work on the [Polynym project](https://tncpw.co/a2bb8168)
+[@Dean](https://github.com/deanmlittle) & [BitPing](https://github.com/uptimesv) for their hard work on the [Polynym project](https://tpow.app/a2bb8168)
 
 Looking for a Javascript version? Check out the [Polynym npm package](https://www.npmjs.com/package/polynym).
 
