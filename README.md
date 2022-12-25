@@ -2,7 +2,7 @@
 > The unofficial Go implementation for the [Polynym API](https://polynym.io/)
 
 [![Release](https://img.shields.io/github/release-pre/mrz1836/go-polynym.svg?logo=github&style=flat&v=1)](https://github.com/mrz1836/go-polynym/releases)
-[![Build Status](https://img.shields.io/github/workflow/status/mrz1836/go-polynym/run-go-tests?logo=github&v=3)](https://github.com/mrz1836/go-polynym/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/mrz1836/go-polynym/run-tests.yml?branch=master&logo=github&v=2)](https://github.com/mrz1836/go-polynym/actions)
 [![Report](https://goreportcard.com/badge/github.com/mrz1836/go-polynym?style=flat&v=2)](https://goreportcard.com/report/github.com/mrz1836/go-polynym)
 [![codecov](https://codecov.io/gh/mrz1836/go-polynym/branch/master/graph/badge.svg?v=1)](https://codecov.io/gh/mrz1836/go-polynym)
 [![Go](https://img.shields.io/github/go-mod/go-version/mrz1836/go-polynym)](https://golang.org/)
